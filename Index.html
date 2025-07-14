@@ -1,204 +1,262 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CardEtiqueta</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction:column;
-        }
-        .label-container {
-            display: grid;
-            grid-template-columns: repeat(2, 437px);
-            gap: 35px;
-            margin-top: 20px;
-        }
-        .label {
-            width: 465px;
-            height: 275px;
-            padding: 10px;
-            box-sizing: border-box;
-            color: black;
-            background-size: cover;
-            border: 1px solid #000;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .input-section {
-            max-width: 900px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .input-group {
-            display: flex;
-            gap: 10px;
-        }
-        .background-select, .submit-btn, .add-bulk {
-            margin-top: 10px;
-        }
-        /* Ajustes para impressão */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .label-container, .label-container * {
-                visibility: visible;
-            }
-            .label-container {
-                position: absolute;
-                top: 0;
-                left: 0;
-                margin: 0;
-            }
-            /* Limita a impressão a 10 etiquetas por página */
-            .label:nth-child(10n) {
-                page-break-after: always;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CardEtiqueta</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .label-container {
+      display: grid;
+      grid-template-columns: repeat(2, 437px);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .label {
+      width: 400px;
+      height: 242px;
+      padding: 5px;
+      box-sizing: border-box;
+      color: black;
+      background-size: cover;
+      border: 1px solid #000;
+      border-radius: 5px;
+      cursor: pointer;
+      overflow: hidden;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+
+    .input-section {
+      max-width: 850px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .input-group {
+      display: grid;
+      grid-template-columns: repeat(2, 437px);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .background-select, .submit-btn, .add-bulk, .import-file {
+      margin-top: 10px;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .label-container, .label-container * {
+        visibility: visible;
+      }
+      .label-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+      }
+      .label:nth-child(10n) {
+        page-break-after: always;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <h1>CardEtiqueta</h1>
+  <h1>CardEtiqueta</h1>
 
-    <!-- Entrada Manual -->
-    <div class="input-section">
-        <h2>Entrada Manual</h2>
-        <div class="input-group">
-            <input type="text" id="codigo" placeholder="Código">
-            <input type="text" id="inep" placeholder="Inep">
-            <input type="text" id="nome" placeholder="Nome">
-            <input type="text" id="endereco" placeholder="Endereço">
-        </div>
-        <select id="backgroundSelect" class="background-select">
-            <option value="antonioalmeida.png">Antonio Almeida</option>
-<option value="barbalha.png">Barbalha</option>
-<option value="batalha.png">Batalha</option>
-<option value="divino.png">São Jose do Divino</option>
-<option value="esperantina.png">Esperantina</option>
-<option value="lagoadobarro.png">Lagoa do Barro</option>
-<option value="quixeramobim.png">Quixeramobim</option>
-<option value="sme.png">SME</option>
-<option value="mobieduca.png">MobiEduca.me</option>
-<option value="rede.png">Rede</option>
-<option value="arraial.png">São João do Arraial</option>
-<option value="seduc.png">Seduc</option>
-<option value="semec.png">Semec</option>
-<option value="provisoria.png">Provisoria</option>
-<option value="itapipoca.png">Itapipoca</option>
-<option value="uniao.png">Uniao</option>
-<option value="francinopolis.png">Francinopolis</option>
-<option value="mourao.png">Domingos Mourao</option>
-<option value="paracuru.png">Paracuru</option>
-<option value="novooriente.png">Novo Oriente</option>
-<option value="pedro2.png">Pedro II</option>
-        </select>
-        <button onclick="addLabel()" class="submit-btn">Gerar</button>
+  <!-- Entrada Manual -->
+  <div class="input-section">
+    <h2>Entrada Manual</h2>
+    <div class="input-group">
+      <input type="text" id="codigo" placeholder="Código">
+      <input type="text" id="inep" placeholder="Inep">
+      <input type="text" id="nome" placeholder="Nome">
+      <input type="text" id="endereco" placeholder="Endereço">
     </div>
+    <select id="backgroundSelect" class="background-select">
+      <option value="antonioalmeida.png">Antonio Almeida</option>
+      <option value="barbalha.png">Barbalha</option>
+      <option value="batalha.png">Batalha</option>
+      <option value="divino.png">São Jose do Divino</option>
+      <option value="esperantina.png">Esperantina</option>
+      <option value="lagoadobarro.png">Lagoa do Barro</option>
+      <option value="quixeramobim.png">Quixeramobim</option>
+      <option value="sme.png">SME</option>
+      <option value="mobieduca.png">MobiEduca.me</option>
+      <option value="rede.png">Rede</option>
+      <option value="arraial.png">São João do Arraial</option>
+      <option value="seduc.png">Seduc</option>
+      <option value="semec.png">Semec</option>
+      <option value="provisoria.png">Provisoria</option>
+      <option value="itapipoca.png">Itapipoca</option>
+      <option value="uniao.png">Uniao</option>
+      <option value="francinopolis.png">Francinopolis</option>
+      <option value="mourao.png">Domingos Mourao</option>
+      <option value="paracuru.png">Paracuru</option>
+      <option value="novooriente.png">Novo Oriente</option>
+      <option value="pedro2.png">Pedro II</option>
+      <option value="paeslandim.png">Paes Landim</option>
+    </select>
+    <button onclick="addLabel()" class="submit-btn">Gerar</button>
+  </div>
 
-    <!-- Entrada por Planilha -->
-    <div class="input-section">
-        <h2>Entrada por Planilha</h2>
-        <textarea id="bulkInput" rows="5" placeholder="Cole os dados da planilha aqui, separando com tabulações"></textarea>
-        <select id="bulkBackgroundSelect" class="background-select">
-            <option value="antonioalmeida.png">Antonio Almeida</option>
-<option value="barbalha.png">Barbalha</option>
-<option value="batalha.png">Batalha</option>
-<option value="divino.png">São Jose do Divino</option>
-<option value="esperantina.png">Esperantina</option>
-<option value="lagoadobarro.png">Lagoa do Barro</option>
-<option value="quixeramobim.png">Quixeramobim</option>
-<option value="sme.png">SME</option>
-<option value="mobieduca.png">MobiEduca.me</option>
-<option value="rede.png">Rede</option>
-<option value="arraial.png">São João do Arraial</option>
-<option value="seduc.png">Seduc</option>
-<option value="semec.png">Semec</option>
-<option value="provisoria.png">Provisoria</option>
-<option value="itapipoca.png">Itapipoca</option>
-<option value="uniao.png">Uniao</option>
-<option value="francinopolis.png">Francinopolis</option>
-<option value="mourao.png">Domingos Mourao</option>
-<option value="paracuru.png">Paracuru</option>
-<option value="novooriente.png">Novo Oriente</option>
-<option value="pedro2.png">Pedro II</option>
-        </select>
-        <button onclick="addBulkLabels()" class="add-bulk">Gerar em Lote</button>
-    </div>
+  <!-- Entrada por Planilha -->
+     <div class="input-section">
+    <h2>Entrada por Planilha</h2>
+    <textarea id="bulkInput" rows="5" placeholder="Cole os dados da planilha aqui, separando com tabulações"></textarea>
+    <select id="bulkBackgroundSelect" class="background-select">
+      <option value="antonioalmeida.png">Antonio Almeida</option>
+      <option value="barbalha.png">Barbalha</option>
+      <option value="batalha.png">Batalha</option>
+      <option value="divino.png">São Jose do Divino</option>
+      <option value="esperantina.png">Esperantina</option>
+      <option value="lagoadobarro.png">Lagoa do Barro</option>
+      <option value="quixeramobim.png">Quixeramobim</option>
+      <option value="sme.png">SME</option>
+      <option value="mobieduca.png">MobiEduca.me</option>
+      <option value="rede.png">Rede</option>
+      <option value="arraial.png">São João do Arraial</option>
+      <option value="seduc.png">Seduc</option>
+      <option value="semec.png">Semec</option>
+      <option value="provisoria.png">Provisoria</option>
+      <option value="itapipoca.png">Itapipoca</option>
+      <option value="uniao.png">Uniao</option>
+      <option value="francinopolis.png">Francinopolis</option>
+      <option value="mourao.png">Domingos Mourao</option>
+      <option value="paracuru.png">Paracuru</option>
+      <option value="novooriente.png">Novo Oriente</option>
+      <option value="pedro2.png">Pedro II</option>
+      <option value="paeslandim.png">Paes Landim</option>
+    </select>
+    <button onclick="addBulkLabels()" class="add-bulk">Gerar em Lote</button>
+  </div>
 
-    <!-- Container de Etiquetas -->
-    <div class="label-container" id="labelContainer"></div>
+  <!-- Importar Arquivo -->
+  <div class="input-section">
+    <h2>Importar CSV/TXT</h2>
+    <input type="file" id="fileInput" accept=".csv,.txt" class="import-file">
+    <select id="fileBackgroundSelect" class="background-select">
+      <option value="antonioalmeida.png">Antonio Almeida</option>
+      <option value="barbalha.png">Barbalha</option>
+      <option value="batalha.png">Batalha</option>
+      <option value="divino.png">São Jose do Divino</option>
+      <option value="esperantina.png">Esperantina</option>
+      <option value="lagoadobarro.png">Lagoa do Barro</option>
+      <option value="quixeramobim.png">Quixeramobim</option>
+      <option value="sme.png">SME</option>
+      <option value="mobieduca.png">MobiEduca.me</option>
+      <option value="rede.png">Rede</option>
+      <option value="arraial.png">São João do Arraial</option>
+      <option value="seduc.png">Seduc</option>
+      <option value="semec.png">Semec</option>
+      <option value="provisoria.png">Provisoria</option>
+      <option value="itapipoca.png">Itapipoca</option>
+      <option value="uniao.png">Uniao</option>
+      <option value="francinopolis.png">Francinopolis</option>
+      <option value="mourao.png">Domingos Mourao</option>
+      <option value="paracuru.png">Paracuru</option>
+      <option value="novooriente.png">Novo Oriente</option>
+      <option value="pedro2.png">Pedro II</option>
+      <option value="paeslandim.png">Paes Landim</option>
+    </select>
+    <button onclick="importFile()" class="import-file">Importar Arquivo</button>
+  </div>
+   <button onclick="printLabels()" style="margin-top: 20px;">Imprimir</button>
 
-    <button onclick="printLabels()" style="margin-top: 20px;">Imprimir</button>
+  <!-- Etiquetas -->
+  <div class="label-container" id="labelContainer"></div>
 
-    <script>
-        // Adicionar uma única etiqueta com base nos dados do formulário
-        function addLabel() {
-            const codigo = document.getElementById("codigo").value;
-            const inep = document.getElementById("inep").value;
-            const nome = document.getElementById("nome").value;
-            const endereco = document.getElementById("endereco").value;
-            const background = document.getElementById("backgroundSelect").value;
+ 
 
-            createLabel(codigo, inep, nome, endereco, background);
-            clearForm();
-        }
+  <script>
+    function addLabel() {
+      const codigo = document.getElementById("codigo").value.trim();
+      const inep = document.getElementById("inep").value.trim();
+      const nome = document.getElementById("nome").value.trim();
+      const endereco = document.getElementById("endereco").value.trim();
+      const background = document.getElementById("backgroundSelect").value;
+      createLabel(codigo, inep, nome, endereco, background);
+      clearForm();
+    }
 
-        // Adicionar várias etiquetas de uma vez (entrada em lote)
-        function addBulkLabels() {
-            const bulkInput = document.getElementById("bulkInput").value;
-            const background = document.getElementById("bulkBackgroundSelect").value;
-            const lines = bulkInput.split('\n');
+    function addBulkLabels() {
+      const bulkInput = document.getElementById("bulkInput").value;
+      const background = document.getElementById("bulkBackgroundSelect").value;
+      parseTextToLabels(bulkInput, background);
+      document.getElementById("bulkInput").value = "";
+    }
 
-            lines.forEach(line => {
-                const [codigo, inep, nome, endereco] = line.split('\t');
-                if (codigo && inep && nome && endereco) {
-                    createLabel(codigo, inep, nome, endereco, background);
-                }
-            });
+    function importFile() {
+      const input = document.getElementById("fileInput");
+      const background = document.getElementById("fileBackgroundSelect").value;
+      const file = input.files[0];
+      if (!file) return;
 
-            document.getElementById("bulkInput").value = "";
-        }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const content = e.target.result;
+        parseTextToLabels(content, background);
+      };
+      reader.readAsText(file, "UTF-8");
+    }
 
-        // Criar e adicionar uma etiqueta ao container
-        function createLabel(codigo, inep, nome, endereco, background) {
-            const labelContainer = document.getElementById("labelContainer");
-            const labelDiv = document.createElement("div");
-            labelDiv.className = "label";
-            labelDiv.style.backgroundImage = `url('./imagens/${background}')`;
-            labelDiv.innerHTML = `
-                <p>${codigo}</p><br>
-                ${inep}<br>
-                <p><strong><h2>${nome}</h2></strong></p><br>
-                <h>${endereco}</h5>
-            `;
-            // Adiciona evento de clique para remover a etiqueta
-            labelDiv.onclick = () => {
-                labelContainer.removeChild(labelDiv);
-            };
-            labelContainer.appendChild(labelDiv);
-        }
+    function parseTextToLabels(text, background) {
+      const lines = text.split(/\r?\n/);
+      lines.forEach(line => {
+        let separator = line.includes('\t') ? '\t' : ',';
+        const cells = line.split(separator);
+        if (cells.length < 4) return;
 
-        // Limpar os campos de entrada do formulário manual
-        function clearForm() {
-            document.getElementById("codigo").value = "";
-            document.getElementById("inep").value = "";
-            document.getElementById("nome").value = "";
-            document.getElementById("endereco").value = "";
-        }
+        const [codigoRaw, inepRaw, nomeRaw, enderecoRaw] = cells;
+        const codigo = codigoRaw?.trim();
+        const inep = inepRaw?.trim();
+        const nome = nomeRaw?.trim();
+        const endereco = enderecoRaw?.trim();
 
-        // Função de impressão
-        function printLabels() {
-            window.print();
-        }
-    </script>
+        if (!codigo || !inep || !nome || !endereco) return;
+        createLabel(codigo, inep, nome, endereco, background);
+      });
+    }
+
+    function createLabel(codigo, inep, nome, endereco, background) {
+      const labelContainer = document.getElementById("labelContainer");
+      const labelDiv = document.createElement("div");
+      labelDiv.className = "label";
+      labelDiv.style.backgroundImage = `url('./imagens/${background}')`;
+      labelDiv.innerHTML = `
+        <p>${codigo}</p><br>
+        ${inep}<br>
+        <strong><h2>${nome}</h2></strong>
+        <h6>${endereco}</h6>
+      `;
+      labelDiv.onclick = () => labelContainer.removeChild(labelDiv);
+      labelContainer.appendChild(labelDiv);
+    }
+
+    function clearForm() {
+      document.getElementById("codigo").value = "";
+      document.getElementById("inep").value = "";
+      document.getElementById("nome").value = "";
+      document.getElementById("endereco").value = "";
+    }
+
+    function printLabels() {
+      window.print();
+    }
+  </script>
 
 </body>
 </html>
