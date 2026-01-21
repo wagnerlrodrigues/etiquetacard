@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Baixar Vários Arquivos em ZIP</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+  <h1>Baixar Arquivos e Zipar</h1>
+  <textarea id="links" rows="10" cols="80" placeholder="Cole aqui os links dos arquivos, um por linha"></textarea><br><br>
+  <button onclick="baixarTodos()">Baixar e Gerar ZIP</button>
+  <p id="status"></p>
+
+  <script>
+    async function baixarTodos() {
+      const status = document.getElementById("status");
+      const textarea = document.getElementById("links");
+      const links = textarea.value.trim().split('\n').filter(link => link.trim() !== '');
+
+      if (links.length === 0) {
+        alert("Cole ao menos um link!");
+        return;
+      }
+
+      const zip = new JSZip();
+      status.textContent = "Baixando arquivos...";
+
+      for (let i = 0; i < links.length; i++) {
+        const url = links[i].trim();
+        try {
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`Erro ao baixar: ${url}`);
+          const blob = await response.blob();
+
+          const nomeArquivo = url.split('/').pop().split('?')[0] || `arquivo${i}`;
+          zip.file(nomeArquivo, blob);
+          status.textContent = `Baixado: ${nomeArquivo}`;
+        } catch (e) {
+          console.error(e);
+          status.textContent = `Erro ao baixar ${url}`;
+        }
+      }
+
+      status.textContent = "Gerando ZIP...";
+      const conteudoZip = await zip.generateAsync({ type: "blob" });
+
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(conteudoZip);
+      a.download = "arquivos.zip";
+      a.click();
+      status.textContent = "ZIP pronto!";
+    }
+  </script>
+</body>
+</html>

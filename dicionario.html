@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dicionário Técnico Computação</title>
+  <script src="https://unpkg.com/fuse.js@6.6.2"></script> <!-- Biblioteca de busca -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #eaeaea;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dicionário Técnico - Computação e TCC</h1>
+  <input type="text" id="search" placeholder="Buscar termo em inglês ou português..." />
+  <table>
+    <thead>
+      <tr>
+        <th>Inglês</th>
+        <th>Português</th>
+        <th>Classe</th>
+        <th>Categoria</th>
+      </tr>
+    </thead>
+    <tbody id="results"></tbody>
+  </table>
+
+  <script>
+    // Gerar 1000 termos simulados para exemplo
+    const categorias = ["Algoritmos", "TCC", "Programacão", "Banco de Dados", "IA", "Redes", "Teoria da Computação"];
+    const classes = ["noun", "verb", "adjective"];
+    const termos = [];
+    for (let i = 1; i <= 1000; i++) {
+      termos.push({
+        ingles: `term${i}`,
+        portugues: `termo${i}`,
+        classe: classes[i % classes.length],
+        categoria: categorias[i % categorias.length],
+      });
+    }
+
+    const options = {
+      keys: ["ingles", "portugues", "categoria"],
+      threshold: 0.3,
+    };
+    const fuse = new Fuse(termos, options);
+
+    const input = document.getElementById("search");
+    const resultsBody = document.getElementById("results");
+
+    function renderResults(data) {
+      resultsBody.innerHTML = "";
+      (data.length ? data : termos).forEach(t => {
+        const row = `<tr><td>${t.ingles}</td><td>${t.portugues}</td><td>${t.classe}</td><td>${t.categoria}</td></tr>`;
+        resultsBody.innerHTML += row;
+      });
+    }
+
+    input.addEventListener("input", () => {
+      const result = fuse.search(input.value);
+      renderResults(input.value ? result.map(r => r.item) : termos);
+    });
+
+    renderResults(termos);
+  </script>
+</body>
+</html>
